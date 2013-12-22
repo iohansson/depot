@@ -1,0 +1,24 @@
+class Product < ActiveRecord::Base
+  attr_accessible :description, :image_url, :price, :title
+  
+  has_many :line_items
+  before_destroy :ensure_not_referenced_by_any_line_item
+  
+  validates_presence_of :title, :description, :image_url
+  validate :price, numericality: {greater_than_or_equal_to: 0.01}
+  validates_uniqueness_of :title
+  validate :image_url, allow_blank: true, format: {
+    with: %r{/.(jpg|png|gif)/Z}i,
+    message: "must be a URL to jpg, gif or png image."
+  }
+  
+  private
+    def ensure_not_referenced_by_any_line_item
+      if line_items.empty?
+        return true
+      else
+        errors.add(:base, 'Line Items present')
+        return false
+      end
+    end
+end
