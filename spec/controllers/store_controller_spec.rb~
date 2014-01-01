@@ -1,0 +1,12 @@
+require 'spec_helper'
+
+describe StoreController do
+  before do
+    @spanish_product = FactoryGirl.create(:product, locale: 'es')
+    @english_product = FactoryGirl.create(:product, locale: 'en')
+  end
+  it "should display only spanish products for locale es" do
+    get :index, locale: 'es'
+    expect(assigns[:products]).to eq([@spanish_product])
+  end
+end

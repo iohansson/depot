@@ -1,13 +1,26 @@
 Depot::Application.routes.draw do
-  resources :line_items
+  get "admin" => "admin#index"
 
+  controller :session do
+    get "login" => :new
+    post "login" => :create
+    delete "logout" => :destroy
+  end
 
-  resources :carts
-
-
-  root :to => 'store#index', :as => 'store'
-  get "store/index"
-  resources :products
+  resources :users
+  scope '(:locale)' do
+    resources :orders
+    resources :line_items do
+      member do
+        post 'decrement'
+      end
+    end
+    resources :carts
+    root to: 'store#index', as: 'store'
+  end
+  resources :products do
+    get :who_bought, on: :member
+  end
 
 
   # The priority is based upon order of creation:

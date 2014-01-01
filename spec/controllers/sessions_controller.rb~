@@ -1,0 +1,15 @@
+require 'spec_helper'
+
+describe SessionsController do
+  before do
+    @user = FactoryGirl.create(:user)
+  end
+  it "should get new" do
+    get :new
+    expect(response.status).to eq(200)
+  end
+  it "should log user in" do
+    post :create, name: "iohansson", password: "pass"
+    expect(response).to redirect_to admin_path
+  end
+end

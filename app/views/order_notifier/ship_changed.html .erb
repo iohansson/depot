@@ -1,0 +1,7 @@
+<h3>Pragmatic Order Ship Date Changed</h3>
+
+<p>We've changed ship date of your order from <%= @order.ship_date.was? %> to <%= @order.ship_date %></p>
+<table>
+  <tr><th colspan="2">Qty</th><th>Description</th></tr>
+  <%= render @order.line_items %>
+</table>

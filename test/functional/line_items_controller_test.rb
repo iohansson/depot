@@ -21,7 +21,7 @@ class LineItemsControllerTest < ActionController::TestCase
       post :create, line_item: {  }
     end
 
-    assert_redirected_to line_item_path(assigns(:line_item))
+    assert_redirected_to store_path
   end
 
   test "should show line_item" do

@@ -2,12 +2,14 @@ class Product < ActiveRecord::Base
   attr_accessible :description, :image_url, :price, :title
   
   has_many :line_items
+  has_many :orders, through: :line_items
   before_destroy :ensure_not_referenced_by_any_line_item
   
-  validates_presence_of :title, :description, :image_url
-  validate :price, numericality: {greater_than_or_equal_to: 0.01}
-  validates_uniqueness_of :title
-  validate :image_url, allow_blank: true, format: {
+  validates_presence_of :title, :description
+  validates :price, numericality: {greater_than_or_equal_to: 0.01}
+  validates_uniqueness_of :title, message: 'wassup?'
+  validates :title, uniqueness: true, presence: true, length: {minimum: 10}
+  validates :image_url, allow_blank: true, format: {
     with: %r{/.(jpg|png|gif)/Z}i,
     message: "must be a URL to jpg, gif or png image."
   }
